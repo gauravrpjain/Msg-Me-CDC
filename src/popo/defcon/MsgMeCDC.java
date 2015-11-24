@@ -65,14 +65,27 @@ public class MsgMeCDC {
                 MsgMeCDC.oldtime = alerts.get(0).getElementsByTag("td").last().text();
                 return;}
             System.out.println("Current notice time :"+convertTime(time));
-            System.out.println("Printing new alert");
-            for (Element text : content) {
-                System.out.println(text.text());
-            }
+            //for (Element text : content) {
+            //    System.out.println(text.text());
+            //}
+            String smsTitle = content.get(1).text();
+            String smsCompanyName = content.get(2).text();
+            String smsNoticeTime = content.get(4).text();
+            String preSMStext = content.get(3).text();
+            String randomtext = "Placement/ Internship Form Description Files";
+            int start = preSMStext.indexOf(randomtext)+randomtext.length()+1;
+            int end = 140-(smsTitle.length() + smsCompanyName.length() + smsNoticeTime.length() + 3);
+            String smsContent = preSMStext.substring(start,start+end);
+            String sms = smsTitle+'\n'+smsCompanyName+'\n'+smsNoticeTime+'\n'+smsContent;
+            System.out.println(sms);
+            sendSMS("+xxxx",sms);
+            System.out.println("\nLength of SMS is "+sms.length());
+            System.out.println("");
         }
         //System.out.println(notices.toString());
     }
-    
+    void sendSMS(String phoneNo, String msg){
+    }
     String convertTime(String time){
     String[] s = time.split(" ");
     String[] date = s[0].split("-");
