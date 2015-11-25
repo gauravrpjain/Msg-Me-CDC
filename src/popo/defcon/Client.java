@@ -51,8 +51,8 @@ public class Client {
     private List<NameValuePair> getParams(String message) {
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("Body", message));
-        params.add(new BasicNameValuePair("To", "+918101227520"));
-        params.add(new BasicNameValuePair("From", "+16788206691"));
+        params.add(new BasicNameValuePair("To", "your phone no"));
+        params.add(new BasicNameValuePair("From", "your twilio no"));
 
         return params;
     }
