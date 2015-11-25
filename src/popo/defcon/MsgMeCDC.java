@@ -11,6 +11,12 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.http.HttpHost;
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,7 +28,7 @@ import org.jsoup.select.Elements;
  * @author Popo
  */
 public class MsgMeCDC {
-    static String oldtime="23-11-2015 23:56";
+    static String oldtime="26-11-2015 01:33";
     String readPage(){
      try{
         URL site = new URL("http://cdc.iitkgp.ernet.in/notice/");
@@ -65,27 +71,34 @@ public class MsgMeCDC {
                 MsgMeCDC.oldtime = alerts.get(0).getElementsByTag("td").last().text();
                 return;}
             System.out.println("Current notice time :"+convertTime(time));
+            Logger.getLogger(MsgMeCDC.class.getName()).log(Level.INFO, "Current notice time :"+convertTime(time));
             //for (Element text : content) {
             //    System.out.println(text.text());
             //}
             String smsTitle = content.get(1).text();
-            String smsCompanyName = content.get(2).text();
+            //String smsCompanyName = content.get(2).text();
             String smsNoticeTime = content.get(4).text();
             String preSMStext = content.get(3).text();
             String randomtext = "Placement/ Internship Form Description Files";
             int start = preSMStext.indexOf(randomtext)+randomtext.length()+1;
-            int end = 140-(smsTitle.length() + smsCompanyName.length() + smsNoticeTime.length() + 3);
+            int twilio = "Sent from your Twilio trial account - ".length();
+            int end = 150-(smsTitle.length() + smsNoticeTime.length()+ twilio + 2);
             String smsContent = preSMStext.substring(start,start+end);
-            String sms = smsTitle+'\n'+smsCompanyName+'\n'+smsNoticeTime+'\n'+smsContent;
+            String sms = smsTitle+'\n'+smsNoticeTime+'\n'+smsContent;
             System.out.println(sms);
-            sendSMS("+xxxx",sms);
-            System.out.println("\nLength of SMS is "+sms.length());
+            sendSMS(sms);
+            Logger.getLogger(MsgMeCDC.class.getName()).log(Level.INFO, "SMS sent: "+sms );
+            Logger.getLogger(MsgMeCDC.class.getName()).log(Level.INFO, "Length of SMS is "+(sms.length()+twilio));
+            System.out.println("\nLength of SMS is "+(sms.length()+twilio));
             System.out.println("");
         }
         //System.out.println(notices.toString());
     }
-    void sendSMS(String phoneNo, String msg){
+    void sendSMS(String msg){
+        Client c = new Client();
+        c.sendMessage(msg);
     }
+    
     String convertTime(String time){
     String[] s = time.split(" ");
     String[] date = s[0].split("-");
@@ -97,8 +110,17 @@ public class MsgMeCDC {
      */
     public static void main(String[] args) {
         MsgMeCDC m = new MsgMeCDC();
+        while( true){
         m.Parse();
-        m.Parse();
+            try {
+                System.out.println("\n Starting Sleep");
+                Thread.sleep((long)600000);
+                System.out.println("\n SLEEP Finished");
+            } catch (InterruptedException ex) {
+                System.out.println("\n SLEPP FAILED \n");
+                Logger.getLogger(MsgMeCDC.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
        }
     
 }
