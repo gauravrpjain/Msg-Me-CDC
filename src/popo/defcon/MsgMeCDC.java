@@ -28,10 +28,10 @@ import org.jsoup.select.Elements;
  * @author Popo
  */
 public class MsgMeCDC {
-    static String oldtime="26-11-2015 01:33";
+    static String oldtime="26-11-2015 18:33";
     String readPage(){
-     try{
-        URL site = new URL("http://cdc.iitkgp.ernet.in/notice/");
+        try{
+            URL site = new URL("http://cdc.iitkgp.ernet.in/notice/");
             Proxy p = new Proxy(Proxy.Type.HTTP,new InetSocketAddress("10.3.100.207", 8080));
             HttpURLConnection notice_board = (HttpURLConnection)site.openConnection(p);
            // System.out.println("Proxy in Use: "+notice_board.usingProxy());
@@ -40,10 +40,10 @@ public class MsgMeCDC {
             String temp;
             StringBuilder http = new StringBuilder();
            // int line = 1;
-        while((temp = in.readLine()) != null){
-            http.append('\n').append(temp);
-            //System.out.println("reading line no" + line++);
-        }
+                while((temp = in.readLine()) != null){
+                http.append('\n').append(temp);
+                //System.out.println("reading line no" + line++);
+            }
         //System.out.println(http);
         return(http.toString());
     }catch(Exception e){
