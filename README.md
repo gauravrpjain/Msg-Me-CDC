@@ -10,7 +10,7 @@ An application to send SMS for each new update/notice on the IIT Kharagpur CDC N
   - In Windows based server, double clicking on the .jar file would execute the program, or you can run the following command in terminal: 
   ```sh
   $ java -jar Msg-Me-CDC.jar
-  ```sh
+  ```
   Replace 'Msg-Me-CDC.jar' with your jar file name. 
   
   - You can check if the program is running or not by opening the task manager and checking if the concerned java process is running or not. 
